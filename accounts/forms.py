@@ -21,3 +21,14 @@ class ManagerSignUpForm(UserCreationForm):
         user.save()
         student = Manager.objects.create(user=user, hotel=self.cleaned_data.get('hotel'))
         return user
+
+class CustomerSignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_customer = True
+        if commit:
+            user.save()
+        return user
