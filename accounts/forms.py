@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
 from hotels.models import Hotel
-from .models import User, Manager
+from .models import User, Manager, Customer
 
 class ManagerSignUpForm(UserCreationForm):
     hotel = forms.ModelChoiceField(
@@ -31,4 +31,5 @@ class CustomerSignUpForm(UserCreationForm):
         user.is_customer = True
         if commit:
             user.save()
+            student = Customer.objects.create(user=user)
         return user

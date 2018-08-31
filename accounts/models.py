@@ -16,3 +16,14 @@ class Manager(models.Model):
     def __str__(self):
         """Unicode representation of Manager."""
         return self.user.username
+
+class Customer(models.Model):
+    """Model definition for Customer."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        """Unicode representation of Customer."""
+        return self.user.username
+
+
