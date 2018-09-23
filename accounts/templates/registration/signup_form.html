@@ -1,13 +1,22 @@
+{% extends 'hotels/base.html' %}
+{% block title %}Hotel Details{% endblock %}
+{% block body %}
+
 {% load crispy_forms_tags %}
 
 <div class="row">
     <div class="col-md-8 col-sm-10 col-12">
+      
       <h2>Sign up as a {{ user_type }}</h2>
+      
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        {{ form|crispy }}
+        <div style="position: center">
+        {% crispy form %}
+        </div>
         <button type="submit" class="btn btn-success">Sign up</button>
       </form>
     </div>
 </div>
+ {% endblock %}
