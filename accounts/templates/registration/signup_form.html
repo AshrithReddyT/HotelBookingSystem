@@ -5,17 +5,15 @@
 {% load crispy_forms_tags %}
 
 <div class="row">
-    <div class="col-md-8 col-sm-10 col-12">
+    <div style="align-content: center;width:100%;padding-left: 25%;padding-right: 25%">
       
-      <h2>Sign up as a {{ user_type }}</h2>
+      <h2 style="align-content: center;width:100%;padding-left: 10%;padding-right: 10%">Sign up as a {{ user_type }}</h2>
       
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        <div style="position: center">
-        {% crispy form %}
-        </div>
-        <button type="submit" class="btn btn-success">Sign up</button>
+        {{ form|crispy }}
+        <center><button type="submit" class="btn btn-success">Sign up</button></center>
       </form>
     </div>
 </div>
