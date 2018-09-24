@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import HotelList, HotelDetail
+from .views import HotelList, HotelDetail, search
 
 urlpatterns = [
     path('', HotelList.as_view(), name='hotel-list'),
     path('<int:pk>', HotelDetail.as_view(), name='hotel-detail'),
+    path('search/', search, name='search'),
 ]
