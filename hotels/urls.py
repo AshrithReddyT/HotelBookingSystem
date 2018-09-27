@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import HotelList, HotelDetail, search
 
+app_name = "hotels"
+
 urlpatterns = [
     path('', HotelList.as_view(), name='hotel-list'),
     path('<int:pk>', HotelDetail.as_view(), name='hotel-detail'),

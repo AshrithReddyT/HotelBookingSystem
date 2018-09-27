@@ -6,6 +6,9 @@ from django.views.generic import TemplateView
 from .forms import ManagerSignUpForm, CustomerSignUpForm
 from .models import User
 
+class index(TemplateView):
+    template_name= 'registration/homepage.html'
+
 class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
 

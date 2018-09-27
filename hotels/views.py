@@ -9,7 +9,7 @@ def search(request):
     locations = Location.objects.all().order_by('location_name')
     if not request.GET.get('location', 'none') == 'none':
         location = request.GET['location']
-        location = Location.objects.filter(location_name=location[0])
+        location = Location.objects.filter(location_name=location)
         hotels = Hotel.objects.filter(location=location[0])
 
         return render(request, 'hotels/search.html', {'hotels': hotels, 'locations': locations, 'location': location})

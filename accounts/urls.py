@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LoginView,LogoutView
 from .views import SignUpView, ManagerSignUpView, CustomerSignUpView
+from django.views.generic import TemplateView
 
+app_name = "accounts"
 urlpatterns = [
-    path('', include('django.contrib.auth.urls')),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', SignUpView.as_view(), name='signup'),
     path('signup/manager/', ManagerSignUpView.as_view(), name='manager_signup'),
     path('signup/customer/', CustomerSignUpView.as_view(), name='customer_signup'),
