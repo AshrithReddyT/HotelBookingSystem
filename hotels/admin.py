@@ -1,14 +1,9 @@
 from django.contrib import admin
-from .models import Hotel,Location
+from .models import Hotel
 
 # Register your models here.
 
 class HotelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location', 'contact', 'email', 'amount')
-
-class LocationAdmin(admin.ModelAdmin):
-    fields = ['location_name']
+    list_display = ('name', 'location', 'contact', 'email', 'rating')
 
 admin.site.register(Hotel, HotelAdmin)
-admin.site.register(Location, LocationAdmin)
-

@@ -24,7 +24,7 @@ class ManagerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('hotel-list')
+        return redirect('hotels:hotel-list')
 
 class CustomerSignUpView(CreateView):
     model = User
@@ -38,4 +38,4 @@ class CustomerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('hotel-list')
+        return redirect('hotels:hotel-list')

@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Hotel , Location
+from .models import Hotel
 
 # Create your views here.
 
 def search(request):
-    locations = Location.objects.all().order_by('location_name')
+    locations = Hotel.objects.all().values_list('location', flat=True).distinct()
     if not request.GET.get('location', 'none') == 'none':
         location = request.GET['location']
-        location = Location.objects.filter(location_name=location)
-        hotels = Hotel.objects.filter(location=location[0])
+        hotels = Hotel.objects.filter(location=location)
 
         return render(request, 'hotels/search.html', {'hotels': hotels, 'locations': locations, 'location': location})
 
