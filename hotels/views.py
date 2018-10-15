@@ -10,9 +10,10 @@ def search(request):
     if not request.GET.get('location', 'none') == 'none':
         location = request.GET['location']
         location = Location.objects.filter(location_name=location)
+        name = location[0].location_name
         hotels = Hotel.objects.filter(location=location[0])
 
-        return render(request, 'hotels/search.html', {'hotels': hotels, 'locations': locations, 'location': location})
+        return render(request, 'hotels/search.html', {'hotels': hotels, 'locations': locations, 'location': name})
 
     return render(request, 'hotels/search.html', {'locations': locations})
 
