@@ -2,9 +2,12 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.views.generic import CreateView
 from django.views.generic import TemplateView
+from django.db import transaction
+from django.core.mail import EmailMessage
 
 from .forms import ManagerSignUpForm, CustomerSignUpForm
 from .models import User
+from .emails import MANAGER_JOIN_EMAIL
 
 class index(TemplateView):
     template_name= 'registration/homepage.html'
@@ -21,10 +24,21 @@ class ManagerSignUpView(CreateView):
         kwargs['user_type'] = 'manager'
         return super().get_context_data(**kwargs)
 
+    @transaction.atomic
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
-        return redirect('hotel-list')
+        user.is_active = False
+        # login(self.request, user)
+        admin_email = User.objects.get(pk=1).email
+        subject = "[YOYO] New Manager - %s" % user.username
+        body = MANAGER_JOIN_EMAIL % (user.username, user.manager.hotel)
+        # try:
+        email = EmailMessage(subject, body, to=[admin_email])
+        email.send()
+        user.save()
+        # except:
+            # print("Unable to send email (%s)" % admin_email)
+        return redirect('hotels:hotel-list')
 
 class CustomerSignUpView(CreateView):
     model = User
@@ -35,7 +49,8 @@ class CustomerSignUpView(CreateView):
         kwargs['user_type'] = 'customer'
         return super().get_context_data(**kwargs)
 
+    @transaction.atomic
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('hotel-list')
+        return redirect('hotels:hotel-list')
