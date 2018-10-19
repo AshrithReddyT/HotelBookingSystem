@@ -27,29 +27,16 @@
       <ul id="results">
         {% for hotel in hotels %}
         <li>
-          <!-- <div class="list-left" style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">
-                <h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Hotel Name: </h3><br />
-                <h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;"">Contact Number: </h3><br />
-                <h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Email: </h3><br />
-                <h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Rating: </h3>
-          </div>
-          <div class="list-right">
-                <h2 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">{{ hotel.name }}</h2><br />
-            <br /><h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">{{ hotel.contact }}</h3><br />
-            <br /><h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">{{ hotel.email }}</h3><br />
-            <h3 style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">₹{{ hotel.amount }}</h3><br />
-            </div> -->
             <div class="book-module">
               <div class="inner">
             
                 <div class="top">
                   <div class="inner">
             
-            
                     <div class="logo-container">
                       <h3>{{ hotel.name }}</h3>
                       <p>{{ location }}</p>
-                      <button class="btn">Book</button>
+                      <button class="btn" onclick="location.href='{% url 'hotels:booking' %}?hotel_id={{ hotel.id }}';">Book</button>
                     </div>
             
                   </div>

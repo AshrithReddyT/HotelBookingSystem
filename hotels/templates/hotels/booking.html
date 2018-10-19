@@ -1,0 +1,17 @@
+{% extends 'hotels/base.html' %}
+{% block title %}Search{% endblock %}
+{% load staticfiles %}
+{% block body %}
+<p>
+  <div >
+    <div class="panel-body">
+      <center><h2 style="color: #F96; display: block; font-size: 30px;font-weight: 400;">Booking<h2><br /></center>
+      <form class="search-container" action="" method="GET" enctype="multipart/form-data">
+        <div>
+            {{ hotel.name }}
+          <br />
+        </div>
+      </form>
+    </div>
+</p>
+{% endblock %}
