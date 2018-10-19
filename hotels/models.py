@@ -47,3 +47,17 @@ class Room(models.Model):
     def __str__(self):
         """Unicode representation of Room."""
         return str(self.hotel) + ' ' + self.type_name + ' ' + self.occupancy + ' ' + self.room_type
+
+class Booking(models.Model):
+    """Model definition for Booking."""
+    
+    customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    room = models.ForeignKey('hotels.Room', on_delete=models.CASCADE)
+    begin_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    num_rooms = models.PositiveIntegerField()
+    amount = models.PositiveIntegerField() 
+
+    def __str__(self):
+        """Unicode representation of Booking."""
+        return str(self.room.pk) + ' ' + str(self.num_rooms)
