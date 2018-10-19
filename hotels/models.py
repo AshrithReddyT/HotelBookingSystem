@@ -20,22 +20,30 @@ class Hotel(models.Model):
         """Unicode representation of Hotel."""
         return self.name
 
-OCCUPANCY_CHOICES = [
-    ("SINGLE", "SINGLE"),
-    ("DOUBLE", "DOUBLE"),
-]
-TYPE_CHOICES = [
-    ("A/C(Air Conditioned)", "A/C(Air Conditioned)"),
-    ("Non A/C(Non Air Conditioned)", "Non A/C(Non Air Conditioned)"),
-]
-
 class Room(models.Model):
     """Model definition for Room."""
 
+    OCCUPANCY_CHOICES = [
+        ("SINGLE", "SINGLE"),
+        ("DOUBLE", "DOUBLE"),
+    ]
+    TYPE_CHOICES = [
+        ("A/C(Air Conditioned)", "A/C(Air Conditioned)"),
+        ("Non A/C(Non Air Conditioned)", "Non A/C(Non Air Conditioned)"),
+    ]
+
     hotel = models.ForeignKey('hotels.Hotel', on_delete=models.CASCADE)
-    type_name = models.CharField(max_length=100, default="Delux")
+    type_name = models.CharField(max_length=100, default="Deluxe")
     occupancy = models.CharField(max_length=50, choices=OCCUPANCY_CHOICES , default="SINGLE")
     room_type = models.CharField(max_length=50, choices=TYPE_CHOICES , default="Non A/C(Non Air Conditioned)")
     maximum = models.PositiveIntegerField(default=10)
     available = models.PositiveIntegerField(default=10)
     cost = models.PositiveIntegerField(default=1000)
+
+    def get_absolute_url(self):
+        """Return absolute url for Room."""
+        return reverse('hotels:room-detail', args=[str(self.hotel.pk), str(self.pk)])
+
+    def __str__(self):
+        """Unicode representation of Room."""
+        return str(self.hotel) + ' ' + self.type_name + ' ' + self.occupancy + ' ' + self.room_type

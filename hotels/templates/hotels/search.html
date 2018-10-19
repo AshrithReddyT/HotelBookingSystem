@@ -36,7 +36,7 @@
                     <div class="logo-container">
                       <h3>{{ hotel.name }}</h3>
                       <p>{{ location }}</p>
-                      <button class="btn" onclick="location.href='{% url 'hotels:booking' %}?hotel_id={{ hotel.id }}';">Book</button>
+                      <button class="btn" onclick="location.href='{% url 'hotels:room-list' hotel.id %}';">View Rooms</button>
                     </div>
             
                   </div>

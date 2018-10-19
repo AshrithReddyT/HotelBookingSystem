@@ -5,9 +5,27 @@ from .models import Hotel,Room
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'contact', 'email', 'rating')
+    readonly_fields = ['name', 'location']
+
+    def get_queryset(self, request):
+        qs = super(HotelAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(pk=request.user.manager.hotel.pk)
 
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'type_name','occupancy','room_type','maximum','available','cost')
+    readonly_fields = ['hotel']
+
+    def get_queryset(self, request):
+        qs = super(RoomAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(hotel=request.user.manager.hotel)
+
+    def save_model(self, request, obj, form, change):
+        obj.hotel = request.user.manager.hotel
+        super(RoomAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(Room, RoomAdmin)
