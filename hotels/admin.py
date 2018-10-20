@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Hotel,Room
+from .models import Hotel, Room, Booking
 
 # Register your models here.
-
+@admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'contact', 'email', 'rating')
     readonly_fields = ['name', 'location']
@@ -13,6 +13,7 @@ class HotelAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(pk=request.user.manager.hotel.pk)
 
+@admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'type_name','occupancy','room_type','maximum','available','cost')
     readonly_fields = ['hotel']
@@ -27,5 +28,6 @@ class RoomAdmin(admin.ModelAdmin):
         obj.hotel = request.user.manager.hotel
         super(RoomAdmin, self).save_model(request, obj, form, change)
 
-admin.site.register(Hotel, HotelAdmin)
-admin.site.register(Room, RoomAdmin)
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'room', 'num_rooms', 'amount']
