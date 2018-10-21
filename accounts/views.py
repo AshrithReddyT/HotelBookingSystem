@@ -8,7 +8,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.models import Group
 from .forms import ManagerSignUpForm, CustomerSignUpForm
 from .models import User
-from .emails import MANAGER_JOIN_EMAIL
+from RoomManagementSystem.emails import MANAGER_JOIN_EMAIL
 
 class index(TemplateView):
     template_name= 'registration/homepage.html'

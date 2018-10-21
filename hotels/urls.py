@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import HotelList, HotelDetail, RoomList, RoomDetail, search ,availability
+from .views import HotelList, HotelDetail, RoomList, RoomDetail, BookingCreate, search
 
 app_name = "hotels"
 
@@ -25,5 +25,5 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('<int:hotel_pk>/rooms', RoomList.as_view(), name='room-list'),
     path('<int:hotel_pk>/rooms/<int:pk>', RoomDetail.as_view(), name='room-detail'),
-    path('checkavailability/', availability, name='room-availability'),
+    path('booking/', BookingCreate.as_view(), name='booking-create'),
 ]

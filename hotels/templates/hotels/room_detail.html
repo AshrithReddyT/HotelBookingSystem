@@ -10,5 +10,5 @@
 <p><strong>A/C:</strong> {{ room.room_type }}</p>
 <p><strong>Available:</strong> {{ room.available }}</p>
 <p><strong>Cost:</strong> {{ room.cost }}</p>
-<button class="button-three" onclick="location.href='{% url 'hotels:room-availability' %}?hotel_id={{ room.hotel.id }}&room_id={{ room.id }}';">Check Availability</button>
+<button class="button-three" onclick="location.href='{% url 'hotels:booking-create' %}?hotel_id={{ room.hotel.id }}&room_id={{ room.id }}';">Book</button>
 {% endblock %}
