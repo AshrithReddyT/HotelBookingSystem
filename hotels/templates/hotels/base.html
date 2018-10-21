@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "hotels/css/main.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "hotels/css/style.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "hotels/css/extended.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "hotels/css/profile.css" %}">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -57,7 +58,7 @@
 
 										<li>
 											{% if request.user.is_authenticated %}
-												<a href="profile.html">
+												<a href="{% url 'accounts:user-detail' request.user.pk %}">
 													Profile
 												</a>
 											{% else %}

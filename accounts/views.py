@@ -1,7 +1,8 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.views.generic import CreateView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView 
+from django.views.generic.detail import DetailView
 from django.db import transaction
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import Group
@@ -56,3 +57,7 @@ class CustomerSignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('hotels:hotel-list')
+
+class UserDetail(DetailView):
+    model = User
+    template_name = 'registration/userprofile.html'
