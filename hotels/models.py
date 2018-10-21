@@ -8,6 +8,7 @@ class Hotel(models.Model):
 
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
+    address = models.TextField(default="Address")
     contact = models.CharField(max_length=100, default='123456789')
     email = models.EmailField(max_length=100, default='hotel_name@email.com')
     rating = models.PositiveIntegerField(default=3)
@@ -18,8 +19,7 @@ class Hotel(models.Model):
 
     def __str__(self):
         """Unicode representation of Hotel."""
-        return self.name
-
+        return str(self.name) + '(' + str(self.location) + ')'
 class Room(models.Model):
     """Model definition for Room."""
 
