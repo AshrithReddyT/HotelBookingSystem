@@ -21,12 +21,15 @@ def search(request):
 
 def availability(request):
     if request.GET.get('hotel_id') and request.GET.get('room_id') and request.GET.get('checkin') and request.GET.get('checkout'):
+        hotel_id = request.GET['hotel_id']
+        room_id = request.GET['room_id']
         checkin = request.GET['checkin']
         checkin =  dateutil.parser.parse(checkin)
         checkout = request.GET['checkout']
         checkout =  dateutil.parser.parse(checkout)
-        hotel_id = request.GET['hotel_id']
-        room_id = request.GET['room_id']
+        error = "Check-Out can not be before Check-In"
+        if checkout < checkin:
+            return render(request, 'hotels/availability.html', {'hotel_id' : hotel_id, 'room_id': room_id,'error':error} )
         hotel = Hotel.objects.filter(id=hotel_id)
         rooms = Room.objects.filter(id=room_id)
         bookings = Booking.objects.filter(room=rooms[0])
