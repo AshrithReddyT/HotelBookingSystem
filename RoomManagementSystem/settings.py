@@ -34,13 +34,11 @@ ALLOWED_HOSTS = []
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 INSTALLED_APPS = [
     'accounts',
     'hotels',
     'crispy_forms',
-    'sendmail',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

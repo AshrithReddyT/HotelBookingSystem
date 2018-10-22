@@ -54,7 +54,7 @@
 		
 										<li>
 											{% if not request.user.is_authenticated %}
-												<a href="{% url 'sendmail:email' %}">Contact</a>
+												<a href="{% url 'hotels:email' %}">Contact</a>
 											{% endif %}
 											{% if request.user.is_authenticated %}
 												{% if request.user.is_superuser %}

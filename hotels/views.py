@@ -3,14 +3,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Hotel, Room ,Booking
-from .forms import BookingForm
+from .forms import BookingForm, ContactForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from RoomManagementSystem.emails import BOOKING_EMAIL
 import dateutil.parser
-from django.db.models import Q
-from django.http import HttpResponseRedirect
-from django.views.generic.base import RedirectView
+from accounts.models import User
+from django.core.mail import EmailMessage
 
 # Create your views here.
 
@@ -22,6 +21,48 @@ def search(request):
         return render(request, 'hotels/search.html', {'hotels': hotels, 'locations': locations, 'location': location})
 
     return render(request, 'hotels/search.html', {'locations': locations})
+
+
+def emailView(request):
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            location = form.cleaned_data['location']
+            hotel_name = form.cleaned_data['hotel_name']
+            hotel_email = form.cleaned_data['hotel_email']
+            email = form.cleaned_data['email']
+            contact = form.cleaned_data['contact']
+            subject = name + ' wants to add ' + hotel_name + ' (' + location + ')'
+            message ="""
+Greetings Admin!
+A request has been recieved to add a new hotel to the database:-
+
+Hotel Name: %s
+Location: %s
+Hotels Email ID: %s
+Requested By: %s
+Users Email ID: %s
+Contact Number: %s
+
+
+
+Regards,
+Team HBS.
+""" % (hotel_name,location,hotel_email,name,email,contact)
+            admin_email = User.objects.get(pk=1).email
+            success = False
+            try:
+                email = EmailMessage(subject, message, to=[admin_email])
+                email.send()
+                success = True
+            except Exception as e:
+                print("Unable to send email to (%s)\n%s" % (admin_email, e))
+            return  render(request, "hotels/email.html", {'success': success})
+    return render(request, "hotels/email.html", {'form': form})
+
 
 @method_decorator(login_required, name='dispatch')
 class BookingCreate(CreateView):

@@ -11,3 +11,11 @@ class BookingForm(forms.ModelForm):
         model = Booking
         fields = ['room', 'begin_time', 'end_time', 'num_rooms']
         
+
+class ContactForm(forms.Form):
+    name = forms.CharField(required=True)
+    location = forms.CharField(required=True)
+    hotel_name = forms.CharField(required=True)
+    hotel_email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True)
+    contact = forms.CharField(required=True)
