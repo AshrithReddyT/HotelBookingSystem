@@ -30,7 +30,7 @@ class ManagerSignUpView(CreateView):
         user = form.save()
         # is_staff be default for dev purpose
         user.is_staff = True
-        user.groups.add(Group.objects.all()[0])
+        user.groups.add(Group.objects.get(name='Manager Permissions'))
         login(self.request, user)
         admin_email = User.objects.get(pk=1).email
         subject = "[YOYO] New Manager - %s" % user.username
