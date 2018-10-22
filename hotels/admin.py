@@ -5,7 +5,7 @@ from .models import Hotel, Room, Booking
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'address', 'contact', 'email', 'rating')
-    readonly_fields = ['name', 'location']
+    # readonly_fields = ['name', 'location']
 
     def get_queryset(self, request):
         qs = super(HotelAdmin, self).get_queryset(request)
