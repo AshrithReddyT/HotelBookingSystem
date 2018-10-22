@@ -7,6 +7,10 @@ from .forms import BookingForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 import dateutil.parser
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.views.generic.base import RedirectView
+
 # Create your views here.
 
 def search(request):
@@ -80,3 +84,18 @@ class RoomList(ListView):
 class RoomDetail(DetailView):
     model = Room
     template_name='hotels/room_detail.html'
+
+
+class BookingList(ListView):
+    template_name = 'hotels/booking-list.html'
+    context_object_name = 'bookings'
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Booking.objects.all()
+        elif self.request.user.is_authenticated:
+            if self.request.user.is_customer:
+                return Booking.objects.filter(customer=self.request.user)
+class BookingDetail(DetailView):
+    model = Booking
+    template_name = 'hotels/booking-details.html'

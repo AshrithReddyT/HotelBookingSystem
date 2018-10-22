@@ -53,7 +53,25 @@
 										</li>
 		
 										<li>
-											<a href="{% url 'sendmail:email' %}">Contact</a>
+											{% if not request.user.is_authenticated %}
+												<a href="{% url 'sendmail:email' %}">Contact</a>
+											{% endif %}
+											{% if request.user.is_authenticated %}
+												{% if request.user.is_superuser %}
+												<a href="{% url 'admin:index' %}">Admin</a>
+												{% endif %}
+											{% endif %}
+											{% if request.user.is_authenticated %}
+												{% if request.user.is_manager %}
+												<a href="{% url 'admin:index' %}">Bookings</a>
+												{% endif %}
+											{% endif %}
+											{% if request.user.is_authenticated %}
+												{% if request.user.is_customer %}
+												<a href="{% url 'hotels:bookings' %}">Bookings</a>
+												{% endif %}
+											{% endif %}
+										
 										</li>
 
 										<li>
