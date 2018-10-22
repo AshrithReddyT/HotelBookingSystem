@@ -5,7 +5,11 @@ from .models import Hotel, Room, Booking
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'address', 'contact', 'email', 'rating')
-    # readonly_fields = ['name', 'location']
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+        return self.readonly_fields + ('name', 'location')
 
     def get_queryset(self, request):
         qs = super(HotelAdmin, self).get_queryset(request)
@@ -16,7 +20,11 @@ class HotelAdmin(admin.ModelAdmin):
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'type_name','occupancy','room_type','maximum','available','cost')
-    readonly_fields = ['hotel']
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+        return self.readonly_fields + ('hotel',)
 
     def get_queryset(self, request):
         qs = super(RoomAdmin, self).get_queryset(request)
@@ -31,3 +39,14 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['customer', 'begin_time', 'end_time' ,'room', 'num_rooms', 'amount']
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+        return self.readonly_fields + ('customer', 'room')
+
+    def get_queryset(self, request):
+        qs = super(BookingAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(room__hotel=request.user.manager.hotel)
