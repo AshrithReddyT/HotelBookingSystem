@@ -58,7 +58,6 @@ def availability(request):
         room_type = room[0].type_name
         return render(request, 'hotels/availability.html', {'hotel_id' : hotel_id, 'room_id': room_id,'hotel_name' : hotel_name, 'room_type': room_type})
     return render(request, 'hotels/availability.html')
-
 class HotelList(ListView):
     model = Hotel
     context_object_name = 'hotels_list'
@@ -72,6 +71,11 @@ class RoomList(ListView):
     model = Room
     context_object_name = 'rooms_list'
     template_name='hotels/room_list.html'
+
+    queryset = Room.objects.all()
+
+    def get_queryset(self):
+        return Room.objects.filter(hotel=self.kwargs.get('hotel_pk'))
 
 class RoomDetail(DetailView):
     model = Room
