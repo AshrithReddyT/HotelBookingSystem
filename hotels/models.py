@@ -11,7 +11,8 @@ class Hotel(models.Model):
     address = models.TextField(default="Address")
     contact = models.CharField(max_length=100, default='123456789')
     email = models.EmailField(max_length=100, default='hotel_name@email.com')
-    rating = models.PositiveIntegerField(default=3)
+    rating = models.DecimalField(decimal_places=2, max_digits=4, default=3)
+    num_rating = models.PositiveIntegerField(default=0)
 
     def get_absolute_url(self):
         """Return absolute url for Hotel."""
@@ -56,7 +57,8 @@ class Booking(models.Model):
     begin_time = models.DateTimeField()
     end_time = models.DateTimeField()
     num_rooms = models.PositiveIntegerField()
-    amount = models.PositiveIntegerField() 
+    amount = models.PositiveIntegerField()
+    user_rating = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         """Unicode representation of Booking."""

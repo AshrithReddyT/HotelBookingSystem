@@ -6,10 +6,10 @@ from .models import Hotel, Room ,Booking
 from .forms import BookingForm, ContactForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from RoomManagementSystem.emails import BOOKING_EMAIL
-import dateutil.parser
+from RoomManagementSystem.emails import BOOKING_EMAIL, CONTACT_EMAIL
 from accounts.models import User
 from django.core.mail import EmailMessage
+from django.utils import timezone
 
 # Create your views here.
 
@@ -35,23 +35,8 @@ def emailView(request):
             hotel_email = form.cleaned_data['hotel_email']
             email = form.cleaned_data['email']
             contact = form.cleaned_data['contact']
-            subject = name + ' wants to add ' + hotel_name + ' (' + location + ')'
-            message ="""
-Greetings Admin!
-A request has been recieved to add a new hotel to the database:-
-
-Hotel Name: %s
-Location: %s
-Hotels Email ID: %s
-Requested By: %s
-Users Email ID: %s
-Contact Number: %s
-
-
-
-Regards,
-Team HBS.
-""" % (hotel_name,location,hotel_email,name,email,contact)
+            subject = '[YOYO] ' + name + ' wants to add ' + hotel_name + ' (' + location + ')'
+            message = CONTACT_EMAIL % (hotel_name,location,hotel_email,name,email,contact)
             admin_email = User.objects.get(pk=1).email
             success = False
             try:
@@ -142,7 +127,6 @@ class RoomDetail(DetailView):
     model = Room
     template_name='hotels/room_detail.html'
 
-
 class BookingList(ListView):
     template_name = 'hotels/booking-list.html'
     context_object_name = 'bookings'
@@ -153,6 +137,25 @@ class BookingList(ListView):
         elif self.request.user.is_authenticated:
             if self.request.user.is_customer:
                 return Booking.objects.filter(customer=self.request.user)
+
 class BookingDetail(DetailView):
     model = Booking
     template_name = 'hotels/booking-details.html'
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('rating'):
+            user_rating = int(request.POST.get('rating'))
+            self.object = super(BookingDetail, self).get_object()
+            hotel = self.object.room.hotel
+            if self.object.user_rating == 0:
+                hotel.rating = (hotel.rating * hotel.num_rating + user_rating)/(hotel.num_rating + 1)
+                hotel.num_rating += 1
+            else:
+                hotel.rating = (hotel.rating * hotel.num_rating - self.object.user_rating + user_rating)/(hotel.num_rating)
+            hotel.save()
+            self.object.user_rating = user_rating
+            self.object.save()
+            print(self.object.user_rating)
+            return redirect('index')
+        return self.get(request)
+            
