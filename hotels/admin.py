@@ -33,7 +33,7 @@ class RoomAdmin(admin.ModelAdmin):
         return qs.filter(hotel=request.user.manager.hotel)
 
     def save_model(self, request, obj, form, change):
-        if not obj.hotel:
+        if not obj.hotel_id:
             obj.hotel = request.user.manager.hotel
         super(RoomAdmin, self).save_model(request, obj, form, change)
 

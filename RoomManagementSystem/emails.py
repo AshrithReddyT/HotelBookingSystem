@@ -12,7 +12,7 @@ Team YOYO.
 """
 
 BOOKING_EMAIL = """\
-Greetings %s %s!
+Greetings %s!
 You've recently carried out a transaction on YOYO. Here are the details for future reference:-
 
 Transaction ID: %d
