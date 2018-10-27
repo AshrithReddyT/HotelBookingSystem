@@ -1,6 +1,23 @@
 {% extends 'hotels/base.html' %}
 {% block title %}Booking Details{% endblock %}
 {% block body %}
+<style>
+.btn {
+        border: none;
+        padding: 10px;
+        margin: 20px auto;
+        width: 30%;
+        height: 45px;
+        display: block;
+        background: #FEA88D;
+        color: #fff;
+        font-size: 1.3em;
+        letter-spacing: 0.1em;
+        box-shadow: 1px 3px 20px rgba(17, 17, 17, 0.1);
+        border-radius: 3px;
+        outline: none;
+}
+</style>
         {% if request.user.is_superuser or booking.customer == request.user or booking.room.hotel == request.user.hotel %}
             <!-- <div class="container" style="background-color: rgba(249, 249, 249, 0.835); opacity:1"> -->
             <center><h1 style="color: #dd5;">Booking Details</h1>
@@ -132,7 +149,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                             <input id="rating" name="rating" hidden />
-                            <center><button class="button-three" onclick="getStars(event)">Rate your Stay</button></center>
+                            <center><button class="btn" onclick="getStars(event)">Rate your Stay</button></center>
 
                             <script>
                                 function getStars(e) {                                    

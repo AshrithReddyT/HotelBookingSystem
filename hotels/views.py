@@ -22,6 +22,8 @@ def search(request):
 
     return render(request, 'hotels/search.html', {'locations': locations})
 
+def about(request):
+    return render(request, 'hotels/about.html')
 
 def emailView(request):
     if request.method == 'GET':
