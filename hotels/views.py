@@ -10,6 +10,8 @@ from RoomManagementSystem.emails import CONTACT_EMAIL
 from accounts.models import User
 from django.core.mail import EmailMessage
 from django.utils import timezone
+from django.http import HttpResponse
+from .resources import RoomResource, BookingResource, TransactionResource
 
 # Create your views here.
 
@@ -149,4 +151,31 @@ class BookingDetail(DetailView):
             self.object.save()
             return redirect('index')
         return self.get(request)
-            
+
+def print_report(request):
+    if request.user.is_staff:
+        if request.GET.get('data', 'none') == 'rooms':
+            room_resource = RoomResource()
+            queryset = Room.objects.all() if request.user.is_superuser \
+                else Room.objects.filter(hotel=request.user.manager.hotel)
+            dataset = room_resource.export(queryset)
+            response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="rooms.xls"'
+            return response
+        elif request.GET.get('data', 'none') == 'bookings':
+            booking_resource = BookingResource()
+            queryset = Booking.objects.all() if request.user.is_superuser \
+                else Booking.objects.filter(room__hotel=request.user.manager.hotel)
+            dataset = booking_resource.export(queryset)
+            response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="bookings.xls"'
+            return response
+        elif request.GET.get('data', 'none') == 'transactions':
+            transaction_resource = TransactionResource()
+            queryset = Transaction.objects.all() if request.user.is_superuser \
+                else Transaction.objects.filter(to_hotel=request.user.manager.hotel)
+            dataset = transaction_resource.export(queryset)
+            response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="transactions.xls"'
+            return response
+    return redirect('/')
