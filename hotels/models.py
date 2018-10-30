@@ -85,8 +85,6 @@ class Transaction(models.Model):
         self.send_email(transaction)
         return transaction, status
 
-    def get_absolute_url(self):
-        return reverse('healthcare:transaction-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         """Unicode representation of Transaction."""
